@@ -23,6 +23,12 @@ That preserves the redirects from their previous personal-repository locations.
 Use the exact fork name shown in your remotes rather than assuming it matches
 the upstream repository name.
 
+The historical `Jesssullivan/dsa-study-packet` and
+`Jesssullivan/dsa-woodshed.space` locations now redirect to organization
+authority. Hooks refuse pushes to those locations as well as the org URLs.
+If an old checkout still uses one as `origin`, point `origin` at your actual
+personal contribution fork before pushing.
+
 `just setup` installs contributor hooks, sets `remote.pushDefault=origin`, and
 disables the upstream push URL. The hooks also run a distinct global hook layer
 when one is configured. Product repositories provide pinned toolchains through
