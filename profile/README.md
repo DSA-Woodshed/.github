@@ -1,21 +1,25 @@
 # The DSA Woodshed
 
-A quiet place to practice the performance of technical interviews.
+A quiet place to reason, code, test, and practice technical interviews in a real editor.
 
-Musicians woodshed: practice the hard passages alone until the performance
-holds under pressure. The Woodshed is that room for technical interviews:
-real problems, real code, and a resident interviewer, one click from the
-browser. You reason in ordinary comments and docstrings in the file you
-are solving. Private arrival writing is never read, scored, or logged. A
-finished rep may record its closeout outcome and review schedule; there are
-no streaks.
+Choose what you want to work on and how much time you have. Study a solution,
+implement an exercise, write tests first, explore a concept, or talk a problem
+through. Reasoning belongs in ordinary source comments and docstrings. You own
+your code and tests; an optional interviewer can help you decide what to do next.
 
-- **Practice now:** [dsa-woodshed.space](https://dsa-woodshed.space)
-- **The packet** (problems, tests, print material): [Jesssullivan/dsa-study-packet](https://github.com/Jesssullivan/dsa-study-packet)
-- **The provisional contract** future language tracks must implement: [TRACK-CONTRACT.md](https://github.com/Jesssullivan/dsa-study-packet/blob/main/TRACK-CONTRACT.md)
+- **Practice and read:** [dsa-woodshed.space](https://dsa-woodshed.space)
+- **Practice and content authority:** [dsa-study-packet](https://github.com/DSA-Woodshed/dsa-study-packet)
+- **Website authority:** [dsa-woodshed.space source](https://github.com/DSA-Woodshed/dsa-woodshed.space)
+- **Contribute:** [fork-first contribution guide](https://github.com/DSA-Woodshed/.github/blob/main/CONTRIBUTING.md)
 
-Python is the only runnable track. R, TypeScript, and C++ are inert
-provisional reservations; Rust is exploratory and not runnable. They remain
-inactive until the interview cycle is explicitly declared complete (G) and
-later derivation work makes a track real. Tracks are disciplines, not
-translations: each eventual corpus will be chosen for its discipline's center.
+Python is the runnable practice discipline. Future disciplines need their own
+curriculum and measured acceptance, rather than translated exercises or empty
+repository reservations. R, Stan, and Quarto reporting and browser-hosted editors
+are bounded future pilots in the existing product roadmap.
+
+Basic practice works without private credentials. Protected services use opt-in
+SSO from the existing portable-seat platform. Bring your own agent tooling on
+your personal fork; the org owns the product commands and public content.
+
+Private arrival writing and employer material are never public inputs. Personal
+practice records stay private. There are no streaks or required comment labels.
