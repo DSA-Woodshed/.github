@@ -29,10 +29,25 @@ authority. Hooks refuse pushes to those locations as well as the org URLs.
 If an old checkout still uses one as `origin`, point `origin` at your actual
 personal contribution fork before pushing.
 
-`just setup` installs contributor hooks, sets `remote.pushDefault=origin`, and
-disables the upstream push URL. The hooks also run a distinct global hook layer
-when one is configured. Product repositories provide pinned toolchains through
-their devcontainers and Nix shells. Basic practice and public builds need no
+`just setup` checks the actual fork relationship using an optional existing
+GitHub CLI login. In an independently owned personal fork, it installs the
+shared hooks and sets `remote.pushDefault=origin` when no push default exists.
+It preserves custom checkout hooks, existing push defaults, linked-worktree
+configuration, remote URLs, and signing settings. Shared or unverified checkouts
+receive a diagnostic and continue ordinary setup without changing Git settings.
+GitHub authentication is optional for public practice.
+
+Inspect the remotes and configuration before changing a preserved setting:
+
+```sh
+git remote -v
+git config --show-origin --get-regexp 'core.hooksPath|remote.pushDefault'
+```
+
+Coordinate with the checkout owner before altering a shared configuration.
+The shared hooks also run a distinct global hook layer when one is configured.
+Product repositories provide pinned toolchains through their devcontainers and
+Nix shells. Basic practice and public builds need no
 private credentials.
 
 ## Branches
