@@ -63,6 +63,15 @@ woodshed_setup_notice() {
   printf 'woodshed-setup: %s; contributor configuration preserved. See CONTRIBUTING.md.\n' "$1" >&2
 }
 
+woodshed_has_default_hooks() {
+  local hook
+  for hook in "$1/hooks/"*; do
+    case "$hook" in *.sample) continue ;; esac
+    [ -f "$hook" ] && [ -x "$hook" ] && return 0
+  done
+  return 1
+}
+
 # Apply defaults only in an independently owned, verified personal fork.
 # Unknown identity and existing custom/shared configuration are advisory skips:
 # ordinary practice setup does not require GitHub authentication or new tools.
@@ -70,7 +79,7 @@ woodshed_setup_notice() {
 woodshed_install_hooks() {
   local hooks="$1" canonical="$2" root common config hooks_path old_hooks
   local origin upstream push_origin login canonical_data canonical_id canonical_name
-  local fork_data fork_name fork_owner is_fork parent_id source_id builtins hook
+  local fork_data fork_name fork_owner is_fork parent_id source_id
   case "$hooks" in githooks|.githooks) ;; *) woodshed_setup_notice 'Unknown hook directory'; return 0 ;; esac
   root="$(git rev-parse --show-toplevel 2>/dev/null)" || { woodshed_setup_notice 'Not a checkout'; return 0; }
   common="$(git rev-parse --git-common-dir 2>/dev/null)" || return 0
@@ -91,13 +100,9 @@ woodshed_install_hooks() {
     { [ -n "$hooks_path" ] && [ "$hooks_path" != "$hooks" ]; }; then
     woodshed_setup_notice 'A custom checkout hook path is configured'; return 0
   fi
-  builtins="$common/hooks"
-  for hook in "$builtins/"*; do
-    case "$hook" in *.sample) continue ;; esac
-    if [ -f "$hook" ] && [ -x "$hook" ]; then
-      woodshed_setup_notice 'Custom hooks exist in the default hooks directory'; return 0
-    fi
-  done
+  if woodshed_has_default_hooks "$common"; then
+    woodshed_setup_notice 'Custom hooks exist in the default hooks directory'; return 0
+  fi
   origin="$(woodshed_github_repo "$(git remote get-url --all origin 2>/dev/null)")" || { woodshed_setup_notice 'Origin identity is unavailable'; return 0; }
   push_origin="$(woodshed_github_repo "$(git remote get-url --push --all origin 2>/dev/null)")" || { woodshed_setup_notice 'Origin push identity is unavailable'; return 0; }
   upstream="$(woodshed_github_repo "$(git remote get-url --all upstream 2>/dev/null)")" || { woodshed_setup_notice 'Upstream identity is unavailable'; return 0; }
@@ -123,7 +128,8 @@ woodshed_install_hooks() {
   if [ "$(git worktree list --porcelain | grep -c '^worktree ')" != 1 ]; then
     woodshed_setup_notice 'Linked worktrees now share this configuration'; return 0
   fi
-  if [ "$(git config --local --includes --get-all core.hooksPath 2>/dev/null || true)" != "$old_hooks" ] || \
+  if [ ! -O "$root" ] || [ ! -O "$config" ] || woodshed_has_default_hooks "$common" || \
+    [ "$(git config --local --includes --get-all core.hooksPath 2>/dev/null || true)" != "$old_hooks" ] || \
     [ "$(git config --worktree --includes --get-all core.hooksPath 2>/dev/null || true)" != "$hooks_path" ] || \
     ! woodshed_same_repo "$(woodshed_github_repo "$(git remote get-url --all origin 2>/dev/null)")" "$origin" || \
     ! woodshed_same_repo "$(woodshed_github_repo "$(git remote get-url --push --all origin 2>/dev/null)")" "$push_origin" || \

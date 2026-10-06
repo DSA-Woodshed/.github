@@ -270,6 +270,9 @@ case "$4" in
   repos/contributor/woodshed-contrib)
     if [ "${WOODSHED_FIXTURE_API:-ok}" = changed ]; then
       git config --local core.hooksPath changed-during-readback
+    elif [ "${WOODSHED_FIXTURE_API:-ok}" = changed-default ]; then
+      printf '#!/usr/bin/env bash\nexit 0\n' > .git/hooks/pre-commit
+      chmod +x .git/hooks/pre-commit
     fi
     printf 'contributor/woodshed-contrib\tcontributor\t%s\t%s\t%s\n' \
       "${WOODSHED_FIXTURE_FORK:-true}" "${WOODSHED_FIXTURE_PARENT:-101}" "${WOODSHED_FIXTURE_SOURCE:-101}"
@@ -338,6 +341,7 @@ installer_preserves() (
     wrong-upstream) git remote set-url upstream https://github.com/DSA-Woodshed/another-repo.git ;;
     credential-url) git remote set-url origin https://hidden@example.org/contributor/woodshed-contrib.git ;;
     changed) export WOODSHED_FIXTURE_API=changed ;;
+    changed-default) export WOODSHED_FIXTURE_API=changed-default ;;
   esac
   local common
   common="$(git rev-parse --git-common-dir)"
@@ -356,7 +360,7 @@ installer_preserves() (
 
 check "verified personal fork installs only missing defaults and is idempotent" 0 --quiet -- installer_defaults
 for mode in custom built-in shared worktree-custom different-login wrong-parent wrong-source non-fork \
-  unavailable canonical-origin push-elsewhere wrong-upstream credential-url changed push-default global-push-default; do
+  unavailable canonical-origin push-elsewhere wrong-upstream credential-url changed changed-default push-default global-push-default; do
   check "installer preserves configuration: $mode" 0 --quiet -- installer_preserves "$mode"
 done
 
