@@ -4,9 +4,7 @@ default:
     @just --list
 
 setup:
-    git config core.hooksPath githooks
-    git config remote.pushDefault origin
-    if git remote get-url upstream >/dev/null 2>&1; then git remote set-url --push upstream DISABLED-fork-first; fi
+    @bash -c 'source githooks/_lib.sh; woodshed_install_hooks githooks DSA-Woodshed/.github'
 
 hooks-test:
     bash githooks/test.sh
