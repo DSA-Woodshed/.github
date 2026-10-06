@@ -75,7 +75,8 @@ missing capability accurately; an unavailable remote executor is not a passing
 execution receipt. Focused learner tests and maintainer validation are different
 commands. A maintainer runs the same gate before landing when needed.
 
-Pull requests land by squash. The title becomes the landed commit subject.
+Pull requests land through reviewed merge commits, preserving signed source
+commits from the fork branch. Use a Conventional Commit title for the final change.
 Publication is restricted to the authoritative org repositories; forks publish
 neither the canonical site nor canonical packet releases.
 
